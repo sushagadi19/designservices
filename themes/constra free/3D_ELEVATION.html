@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+   <!-- Basic Page Needs
+   ================================================== -->
+   <meta charset="utf-8">
+   <title>3D_ELEVATION</title>
+
+   <!-- Mobile Specific Metas
+   ================================================== -->
+
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+
+   <!-- CSS
+   ================================================== -->
+
+   <!-- Bootstrap -->
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+   <!-- Template styles-->
+   <link rel="stylesheet" href="css/style.css">
+   <!-- Responsive styles-->
+   <link rel="stylesheet" href="css/responsive.css">
+   <!-- FontAwesome -->
+   <link rel="stylesheet" href="css/font-awesome.min.css">
+   <!-- Animation -->
+   <link rel="stylesheet" href="css/animate.css">
+   <!-- Owl Carousel -->
+   <link rel="stylesheet" href="css/owl.carousel.min.css">
+   <link rel="stylesheet" href="css/owl.theme.default.min.css">
+   <!-- Colorbox -->
+   <link rel="stylesheet" href="css/colorbox.css">
+
+   <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+   <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+       @import url(https://fonts.googleapis.com/css?family=Open+Sans:400);
+
+.frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-top: -200px;
+  margin-left: -200px;
+  border-radius: 2px;
+  box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+  background: #3A92AF;
+  background: -webkit-linear-gradient(bottom left, #3A92AF 0%, #5CA05A 100%);
+  background: -moz-linear-gradient(bottom left, #3A92AF 0%, #5CA05A 100%);
+  background: -o-linear-gradient(bottom left, #3A92AF 0%, #5CA05A 100%);
+  background: linear-gradient(to top right, #3A92AF 0%, #5CA05A 100%); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3A92AF', endColorstr='#5CA05A',GradientType=1 );
+  color: #fff;
+   font-family: 'Open Sans', Helvetica, sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
+
+.center {
+  position: absolute;
+   width: 300px;
+   height: 260px;
+  top: 70px;
+  left: 50px;
+   background: #fff;
+   box-shadow: 8px 10px 15px 0 rgba(0,0,0,0.2);
+   border-radius: 3px;
+}
+
+.title {
+   font-size: 16px;
+   color: #676767;
+   line-height: 50px;
+   height: 50px;
+   border-bottom: 1px solid #D8D8D8;
+   text-align: center;
+}
+
+.dropzone {
+   position: absolute;
+   z-index: 1;
+   box-sizing: border-box;
+   display: table;
+   table-layout: fixed;
+   width: 100px;
+   height: 80px;
+   top: 86px;
+   left: 100px;
+   border: 1px dashed #A4A4A4;
+   border-radius: 3px;
+   text-align: center;
+   overflow: hidden;
+   
+   &.is-dragover {
+      border-color: #666;
+      background: #eee;
+   }
+   
+   .content {
+      display: table-cell;
+      vertical-align: middle;
+   }
+   
+   .upload {
+      margin: 6px 0 0 2px;
+   }
+   
+   .filename {
+      display: block;
+      color: #676767;
+      font-size: 14px;
+      line-height: 18px;
+   }
+   
+   .input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+   }
+   
+}
+
+.upload-btn {
+   position: absolute;
+   width: 140px;
+   height: 40px;
+   left: 80px;
+   bottom: 24px;
+   background: #ffc526;
+   border-radius: 3px;
+   text-align: center;
+   line-height: 40px;
+   font-size: 14px;
+   box-shadow: 0 2px 0 0 #498C25;
+   cursor: pointer;
+   transition: all .2s ease-in-out;
+   
+   &:hover {
+      box-shadow: 0 2px 0 0 #498C25, 0 2px 10px 0 #6ECE3B;
+   }
+}
+
+.bar {
+   position: absolute;
+   z-index: 1;
+   width: 300px;
+   height: 3px;
+   top: 49px;
+   left: 0;
+   background: #6ECE3B;
+   transition: all 3s ease-out;
+   transform: scaleX(0);
+   transform-origin: 0 0;
+   
+   &.active {
+      transform: scaleX(1) translate3d(0,0,0);
+   }
+}
+
+.syncing {
+   position: absolute;
+   top: 109px;
+   left: 134px;
+   opacity: 0;
+   
+   &.active {
+      animation: syncing 3.2s ease-in-out;
+   }
+}
+
+.done {
+   position: absolute;
+   top: 112px;
+   left: 132px;
+   opacity: 0;
+   
+   &.active {
+      animation: done .5s ease-in 3.2s;
+      animation-fill-mode: both;
+   }
+}
+
+@keyframes syncing {
+   0% {
+      transform: rotate(0deg);
+   }
+   10% {
+      opacity: 1;
+   }
+   90% {
+      opacity: 1;
+   }
+   100% {
+      transform: rotate(360deg);
+      opacity: 0;
+   }
+}
+
+@keyframes done {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+    </style>
+
+</head>
+
+<body>
+
+   <div class="body-inner">
+
+      <!-- Header start -->
+      <header id="header" class="header-one">
+         <div class="container">
+            <div class="row">
+               <div class="logo-area clearfix">
+                  <div class="logo col-xs-12 col-md-3">
+                     <a href="index.html">
+                        <H6>LOGO AREA</H6>
+                        <img src="" alt="">
+                     </a>
+                  </div>
+                  <!-- logo ends -->
+                  <div class="col-xs-12 col-md-9 header-right">
+                     <ul class="top-info-box">
+                        <li>
+                           <div class="info-box">
+                              <div class="info-box-content">
+                                 <p class="info-box-title">Call Us</p>
+                                 <p class="info-box-subtitle">(+91) 1234567890</p>
+                              </div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="info-box">
+                              <div class="info-box-content">
+                                 <p class="info-box-title">Email Us</p>
+                                 <p class="info-box-subtitle">abc@xyz.com</p>
+                              </div>
+                           </div>
+                        </li>
+                     </ul><!-- Ul end -->
+                  </div><!-- header right end -->
+               </div><!-- logo area end -->
+
+            </div><!-- Row end -->
+         </div><!-- Container end -->
+
+                  <nav class="site-navigation navigation navdown">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-12">
+                     </ul>
+                     <div class="site-nav-inner pull-right">
+                           <ul class="navbar-nav">
+                               <li class="nav-item" style="padding-top: 15px">
+                                   <a class="nav-link"data-toggle="dropdown" href="#">Login</a>
+                                   <div class="dropdown-menu action-form">
+                                 <form action="" method="post">
+                                    <p class="hint-text">Sign in with your social media account</p>
+                                    <div class="form-group social-btn clearfix">
+                                       <a href="#" class="btn btn-secondary facebook-btn float-left"><i class="fa fa-facebook"></i> Facebook</a>
+                                       <a href="#" class="btn btn-secondary twitter-btn float-right"><i class="fa fa-twitter"></i> Twitter</a>
+                                    </div>
+                                    <div class="or-seperator"><b>or</b></div>
+                                    <div class="form-group">
+                                       <input type="text" class="form-control" placeholder="Username" required="required">
+                                    </div>
+                                    <div class="form-group">
+                                       <input type="password" class="form-control" placeholder="Password" required="required">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-block" value="Login">
+                                    <div class="text-center mt-2">
+                                       <a href="#">Forgot Your password?</a>
+                                    </div>
+                                 </form>
+                                  </div>
+                               </li>
+                               <li class="nav-item">
+                                   <a class="nav-link"data-toggle="dropdown" href="#">Register</a>
+                                   <div class="dropdown-menu action-form">
+                              <form action="" method="post">
+                                 <p class="hint-text">Fill in this form to create your account!</p>
+                                 <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Username" required="required">
+                                 </div>
+                                 <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="Password" required="required">
+                                 </div>
+                                 <div class="form-group">
+                                    <input type="password" class="form-control" placeholder="Confirm Password" required="required">
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms &amp; Conditions</a></label>
+                                 </div>
+                                 <input type="submit" class="btn btn-primary btn-block" value="Sign up">
+                              </form>
+                           </div>
+                               </li>
+                           </ul>
+                       </div>
+                     <div class="site-nav-inner pull-left">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                           <span class="sr-only">Toggle navigation</span>
+                           <span class="icon-bar"></span>
+                           <span class="icon-bar"></span>
+                           <span class="icon-bar"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse navbar-responsive-collapse">
+                           <ul class="nav navbar-nav">
+               
+                              <li class="dropdown">
+                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Company <i
+                                       class="fa fa-angle-down"></i></a>
+                                 <ul class="dropdown-menu" role="menu">
+                                    <li><a href="about.html">About Us</a></li>
+                                    <!-- <li><a href="team.html">Our People</a></li>
+                                    <li><a href="testimonials.html">Testimonials</a></li>
+                                    <li><a href="faq.html">Faq</a></li> -->
+                                    <li><a href="#">Pricing</a></li>
+                                 </ul>
+                              </li>
+
+                              <li class="dropdown">
+                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Services <i
+                                       class="fa fa-angle-down"></i></a>
+                                 <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Services All</a></li>
+                                    <!-- <li><a href="service-single.html">Services Single</a></li> -->
+                                 </ul>
+                              </li>
+                              <li><a href="contact.html">Contact</a></li>
+
+                           </ul>
+                           <!--/ Nav ul end -->
+                        </div>
+                        <!--/ Collapse end -->
+
+                     </div><!-- Site Navbar inner end -->
+                  
+                  </div>
+                  <!--/ Col end -->
+               </div>
+            </div>
+            <!--/ Container end -->
+
+         </nav>
+         <!--/ Navigation end -->
+      </header>
+      <!--/ Header end -->
+
+   <div id="banner-area" class="banner-area" style="background-image:url(images/banner/banner1.jpg)">
+      <div class="banner-text">
+         <div class="container">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="banner-heading">
+                     <h1 class="banner-title">3D ELEVATION </h1>
+                  </div>
+               </div><!-- Col end -->
+            </div><!-- Row end -->
+         </div><!-- Container end -->
+      </div><!-- Banner text end -->
+   </div><!-- Banner area end --> 
+
+
+   <section id="main-container" class="main-container">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-6">
+               <h3 class="column-title">3D-ELEVATION</h3>
+               <p>when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.</p>
+               <blockquote><p>Semporibus autem quibusdam et aut officiis debitis aut rerum est aut optio cumque nihil necessitatibus autemn ec tincidunt nunc posuere ut</p></blockquote>
+               <p>He lay on his armour-like  back, and if he lifted. ultrices ultrices sapien, nec tincidunt nunc posuere ut. Lorem ipsum dolor sit amet, consectetur adipiscing elit. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn’t anything embarrassing.</p>
+
+            </div><!-- Col end -->
+
+            <div class="col-md-6" style="padding-top: 500px">
+               <form>
+                  <div class="frame">
+                    <div class="center">
+                        <div class="bar"></div>
+                        <div class="title">Drop file to upload</div>
+                        <div class="dropzone">
+                           <div class="content">
+                              <img src="https://100dayscss.com/codepen/upload.svg" class="upload">
+                              <span class="filename"></span>
+                              <input type="file" class="input" name="">
+
+                           </div>
+                        </div>
+                        <img src="https://100dayscss.com/codepen/syncing.svg" class="syncing">
+                        <img src="https://100dayscss.com/codepen/checkmark.svg" class="done">
+                        <div class="upload-btn">Upload file</div>
+                    </div>
+                  </div>
+               </form>
+            </div>
+            <div class="col-xs-12 col-md-5 header-right">
+               <form class="form-inline">
+                   <input type="text" class="form-control" id="inputPassword2" placeholder="Enter Per Square Feet">
+                 <button type="submit" class="btn btn-primary mb-2">SUBMIT</button>
+               </form> 
+            </div>     
+            </div><!-- Col end -->
+         </div><!-- Content row end -->
+
+      </div><!-- Container end -->
+   </section><!-- Main container end -->
+  
+   
+
+   <footer id="footer" class="footer bg-overlay">
+      
+         <div class="copyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xs-12 col-sm-">
+                     <center>
+                        <div class="copyright-info">
+                              <span>Copyright © 2020 XYZ</a></span>
+                        </div>
+                     </center>
+                  </div>
+
+               </div><!-- Row end -->
+
+               <div id="back-to-top" data-spy="affix" data-offset-top="10" class="back-to-top affix">
+                  <button class="btn btn-primary" title="Back to Top">
+                     <i class="fa fa-angle-double-up"></i>
+                  </button>
+               </div>
+
+            </div><!-- Container end -->
+         </div><!-- Copyright end -->
+
+      </footer><!-- Footer end -->
+
+
+
+  <!-- Javascript Files
+================================================== -->
+
+  <!-- initialize jQuery Library -->
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <!-- Bootstrap jQuery -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- Owl Carousel -->
+  <script type="text/javascript" src="js/owl.carousel.min.js"></script>
+  <!-- Color box -->
+  <script type="text/javascript" src="js/jquery.colorbox.js"></script>
+  <!-- Isotope -->
+  <script type="text/javascript" src="js/isotope.js"></script>
+  <script type="text/javascript" src="js/ini.isotope.js"></script>
+
+
+  <!-- Google Map API Key-->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+  <!-- Google Map Plugin-->
+  <script type="text/javascript" src="js/gmap3.js"></script>
+
+ <!-- Template custom -->
+ <script type="text/javascript" src="js/custom.js"></script>
+ <script> var droppedFiles = false;
+var fileName = '';
+var $dropzone = $('.dropzone');
+var $button = $('.upload-btn');
+var uploading = false;
+var $syncing = $('.syncing');
+var $done = $('.done');
+var $bar = $('.bar');
+var timeOut;
+
+$dropzone.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+   e.preventDefault();
+   e.stopPropagation();
+})
+   .on('dragover dragenter', function() {
+   $dropzone.addClass('is-dragover');
+})
+   .on('dragleave dragend drop', function() {
+   $dropzone.removeClass('is-dragover');
+})
+   .on('drop', function(e) {
+   droppedFiles = e.originalEvent.dataTransfer.files;
+   fileName = droppedFiles[0]['name'];
+   $('.filename').html(fileName);
+   $('.dropzone .upload').hide();
+});
+
+$button.bind('click', function() {
+   startUpload();
+});
+
+$("input:file").change(function (){
+   fileName = $(this)[0].files[0].name;
+   $('.filename').html(fileName);
+   $('.dropzone .upload').hide();
+});
+
+function startUpload() {
+   if (!uploading && fileName != '' ) {
+      uploading = true;
+      $button.html('Uploading...');
+      $dropzone.fadeOut();
+      $syncing.addClass('active');
+      $done.addClass('active');
+      $bar.addClass('active');
+      timeoutID = window.setTimeout(showDone, 3200);
+   }
+}
+
+function showDone() {
+   $button.html('Done');
+}
+</script>
+
+</div><!-- Body inner end -->
+</body>
+
+</html>
